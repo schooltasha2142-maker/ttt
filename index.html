@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Урок інформатики: Створення колажів у Photopea</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --accent: #10b981;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: move 20s linear infinite;
+        }
+
+        @keyframes move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Section styles */
+        section {
+            margin: 40px 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary), transparent);
+            margin-left: 15px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .technique-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .technique-card:hover {
+            border-color: var(--primary);
+            transform: scale(1.02);
+        }
+
+        .technique-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 28px;
+            color: white;
+        }
+
+        .technique-card h3 {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        .technique-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent), #059669);
+            color: white;
+        }
+
+        .btn-accent:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-large {
+            padding: 18px 36px;
+            font-size: 1.1rem;
+        }
+
+        /* Goals */
+        .goals-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .goal-item {
+            display: flex;
+            align-items: start;
+            gap: 15px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .goal-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .goal-content h4 {
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+        }
+
+        /* Collapsible */
+        .collapsible {
+            background: var(--card-bg);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .collapsible-header {
+            padding: 20px 24px;
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--primary-dark);
+            transition: background 0.3s;
+        }
+
+        .collapsible-header:hover {
+            background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+        }
+
+        .collapsible-icon {
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+
+        .collapsible.active .collapsible-icon {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: white;
+        }
+
+        .collapsible.active .collapsible-content {
+            max-height: 1000px;
+        }
+
+        .collapsible-body {
+            padding: 24px;
+        }
+
+        .step-list {
+            list-style: none;
+            counter-reset: step;
+        }
+
+        .step-list li {
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 20px;
+            padding-top: 5px;
+        }
+
+        .step-list li::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* Practice block */
+        .practice-block {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 20px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .practice-block::before {
+            content: '🎨';
+            position: absolute;
+            right: -20px;
+            top: -20px;
+            font-size: 150px;
+            opacity: 0.1;
+        }
+
+        .practice-block h3 {
+            color: #92400e;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .task-list {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .task-list li {
+            margin-bottom: 12px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .task-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Editor section */
+        .editor-container {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            margin: 20px 0;
+        }
+
+        .editor-header {
+            background: #1e293b;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .editor-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #f59e0b; }
+        .dot-green { background: #10b981; }
+
+        .editor-frame {
+            width: 100%;
+            height: 600px;
+            border: none;
+            background: #f1f5f9;
+        }
+
+        .editor-fallback {
+            display: none;
+            padding: 40px;
+            text-align: center;
+            background: #f8fafc;
+        }
+
+        /* Defense block */
+        .defense-block {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-radius: 16px;
+            padding: 30px;
+        }
+
+        .defense-block h3 {
+            color: #1e40af;
+            margin-bottom: 15px;
+        }
+
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .question-tag {
+            background: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            box-shadow: var(--shadow);
+            border-left: 3px solid var(--primary);
+        }
+
+        /* Homework */
+        .homework-card {
+            background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+            border-radius: 16px;
+            padding: 30px;
+            border: 2px dashed var(--secondary);
+        }
+
+        .homework-card h3 {
+            color: #be185d;
+            margin-bottom: 15px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            .section-title { font-size: 1.5rem; }
+            .editor-frame { height: 400px; }
+            .practice-block { padding: 24px; }
+            .btn { width: 100%; justify-content: center; margin: 5px 0; }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        /* Utility */
+        .text-center { text-align: center; }
+        .mb-20 { margin-bottom: 20px; }
+        .mt-20 { margin-top: 20px; }
+        .flex { display: flex; }
+        .flex-wrap { flex-wrap: wrap; }
+        .justify-center { justify-content: center; }
+        .gap-10 { gap: 10px; }
+
+        .highlight {
+            background: linear-gradient(120deg, #fef08a 0%, #fef08a 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 88%;
+            padding: 0 4px;
+            font-weight: 600;
+        }
+
+        .tip-box {
+            background: #ecfdf5;
+            border-left: 4px solid var(--accent);
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: flex;
+            align-items: start;
+            gap: 12px;
+        }
+
+        .tip-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🎨 Створення колажів у Photopea</h1>
+    <p class="subtitle">Прийоми колажування та робота з текстом</p>
+</header>
+
+<div class="container">
+
+    <!-- Мета уроку -->
+    <section class="animate-in">
+        <h2 class="section-title">🎯 Мета уроку</h2>
+        <div class="goals-container">
+            <div class="goal-item">
+                <span class="goal-icon">📚</span>
+                <div class="goal-content">
+                    <h4>Навчальна</h4>
+                    <p>Опанувати прийоми створення колажів, навчитися вирізати об'єкти та працювати з текстом у Photopea</p>
+                </div>
+            </div>
+            <div class="goal-item">
+                <span class="goal-icon">🚀</span>
+                <div class="goal-content">
+                    <h4>Розвиваюча</h4>
+                    <p>Розвинути творче мислення, естетичний смак та навички композиції</p>
+                </div>
+            </div>
+            <div class="goal-item">
+                <span class="goal-icon">💡</span>
+                <div class="goal-content">
+                    <h4>Виховна</h4>
+                    <p>Виховувати уважність, терпіння та повагу до чужої праці (авторські права на зображення)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Що таке колаж -->
+    <section class="animate-in">
+        <h2 class="section-title">❓ Що таке колаж?</h2>
+        <div class="card">
+            <p style="font-size: 1.1rem; line-height: 1.8;">
+                <span class="highlight">Колаж</span> — це художній твір, створений шляхом наклеювання або цифрового комбінування різних матеріалів: фотографій, текстур, тексту, малюнків. У цифровій графіці колаж дозволяє створювати <strong>фантастичні сцени</strong>, поєднуючи реальні зображення у несподіваних комбінаціях.
+            </p>
+            <div class="tip-box">
+                <span class="tip-icon">💡</span>
+                <div>
+                    <strong>Цікаво знати:</strong> Слово "колаж" походить від французького <em>coller</em> — "наклеювати". Техніка з'явилася ще в 1912 році завдяки художникам-авангардистам.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Прийоми колажування -->
+    <section class="animate-in">
+        <h2 class="section-title">🛠️ Прийоми колажування</h2>
+        <div class="card-grid">
+            <div class="technique-card" onclick="showTechniqueDetail('cut')">
+                <div class="technique-icon">✂️</div>
+                <h3>Відсікання зайвого</h3>
+                <p>Видалення фону або непотрібних частин зображення для виділення основного об'єкта</p>
+            </div>
+            <div class="technique-card" onclick="showTechniqueDetail('overlay')">
+                <div class="technique-icon">🥞</div>
+                <h3>Нашарування</h3>
+                <p>Розміщення одного зображення поверх іншого з різними режимами змішування</p>
+            </div>
+            <div class="technique-card" onclick="showTechniqueDetail('compare')">
+                <div class="technique-icon">⚖️</div>
+                <h3>Зіставлення</h3>
+                <p>Поєднання контрастних елементів для створення драматичного ефекту</p>
+            </div>
+            <div class="technique-card" onclick="showTechniqueDetail('text')">
+                <div class="technique-icon">📝</div>
+                <h3>Текст + Зображення</h3>
+                <p>Інтеграція тексту в композицію як повноцінного візуального елементу</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photopea Editor -->
+    <section class="animate-in">
+        <h2 class="section-title">💻 Редактор Photopea</h2>
+        <div class="text-center mb-20">
+            <p style="margin-bottom: 20px; color: var(--text-light);">
+                Photopea — це безкоштовний онлайн-редактор, схожий на Photoshop. Працює прямо у браузері!
+            </p>
+            <button class="btn btn-primary btn-large" onclick="openPhotopea()">
+                <span>🚀</span> Відкрити Photopea у новій вкладці
+            </button>
+        </div>
+
+        <div class="editor-container">
+            <div class="editor-header">
+                <div class="editor-dots">
+                    <div class="dot dot-red"></div>
+                    <div class="dot dot-yellow"></div>
+                    <div class="dot dot-green"></div>
+                </div>
+                <span>Photopea Online Editor</span>
+            </div>
+            <iframe 
+                id="photopeaFrame"
+                class="editor-frame" 
+                src="https://www.photopea.com" 
+                allowfullscreen
+                sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+            ></iframe>
+            <div id="editorFallback" class="editor-fallback">
+                <p>⚠️ Якщо редактор не завантажився, натисніть кнопку вище</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Практична робота -->
+    <section class="animate-in">
+        <h2 class="section-title">🎨 Практична робота</h2>
+        <div class="practice-block">
+            <h3>Створи колаж "Мій ідеальний світ"</h3>
+            <p style="color: #78350f; margin-bottom: 20px;">
+                Уяви місце, де тебе оточують улюблені речі, мрії та натхнення. Створи цей світ за допомогою колажу!
+            </p>
+            
+            <div class="task-list">
+                <h4 style="margin-bottom: 15px; color: var(--text);">📋 План роботи:</h4>
+                <ul style="list-style: none;">
+                    <li>Знайди 3–5 якісних зображень на Unsplash або Pexels</li>
+                    <li>Виріж основні об'єкти (людей, тварин, предмети) за допомогою інструменту виділення</li>
+                    <li>Скомбінуй вирізані об'єкти у новій сцені (фон + елементи)</li>
+                    <li>Додай текст: цитату, назву або девіз</li>
+                    <li>Застосуй ефекти: тінь, прозорість, корекцію кольору</li>
+                    <li>Збережи результат у форматі PNG або JPG</li>
+                </ul>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-10 mt-20">
+                <button class="btn btn-secondary btn-large" onclick="openUnsplash()">
+                    <span>🔍</span> Знайти зображення (Unsplash)
+                </button>
+                <button class="btn btn-primary btn-large" onclick="openPhotopea()">
+                    <span>✏️</span> Відкрити редактор
+                </button>
+            </div>
+
+            <div class="tip-box" style="background: white; margin-top: 20px;">
+                <span class="tip-icon">⭐</span>
+                <div>
+                    <strong>Критерії оцінювання:</strong> оригінальність ідеї, якість вирізання, композиція, робота з кольором та текстом, технічна реалізація
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Інструкція роботи в Photopea -->
+    <section class="animate-in">
+        <h2 class="section-title">📖 Інструкція роботи в Photopea</h2>
+        
+        <div class="collapsible" onclick="toggleCollapsible(this)">
+            <div class="collapsible-header">
+                <span>🖼️ Як вставити зображення</span>
+                <span class="collapsible-icon">▼</span>
+            </div>
+            <div class="collapsible-content">
+                <div class="collapsible-body">
+                    <ol class="step-list">
+                        <li>Відкрий Photopea та створи новий документ (File → New) або відкрий існуючий</li>
+                        <li>Натисни <strong>File → Open & Place</strong> ( або просто перетягни файл у вікно)</li>
+                        <li>Обери зображення на комп'ютері</li>
+                        <li>Зображення з'явиться як новий шар — можеш змінювати його розмір рамками</li>
+                        <li>Натисни Enter, щоб підтвердити розміщення</li>
+                    </ol>
+                    <div class="tip-box">
+                        <span class="tip-icon">💡</span>
+                        <div>Порада: Зображення можна просто перетягнути з папки прямо у вікно Photopea!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="collapsible" onclick="toggleCollapsible(this)">
+            <div class="collapsible-header">
+                <span>✂️ Як вирізати об'єкт</span>
+                <span class="collapsible-icon">▼</span>
+            </div>
+            <div class="collapsible-content">
+                <div class="collapsible-body">
+                    <ol class="step-list">
+                        <li>Обери інструмент <strong>Quick Selection Tool (W)</strong> або <strong>Magic Wand</strong> з панелі зліва</li>
+                        <li>Клікни на об'єкт — Photopea автоматично виділить схожі області</li>
+                        <li>Уточни виділення: утримуй Shift, щоб додати, або Alt, щоб відняти область</li>
+                        <li>Натисни <strong>Select → Inverse</strong> (Ctrl+Shift+I), щоб виділити фон</li>
+                        <li>Натисни Delete, щоб видалити фон</li>
+                        <li>Збережи файл із прозорістю: <strong>File → Export As → PNG</strong></li>
+                    </ol>
+                    <div class="tip-box">
+                        <span class="tip-icon">💡</span>
+                        <div>Для складних об'єктів використовуй <strong>Pen Tool (P)</strong> — він дає найточніший контур</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="collapsible" onclick="toggleCollapsible(this)">
+            <div class="collapsible-header">
+                <span>📝 Як додати текст</span>
+                <span class="collapsible-icon">▼</span>
+            </div>
+            <div class="collapsible-content">
+                <div class="collapsible-body">
+                    <ol class="step-list">
+                        <li>Обери інструмент <strong>Type Tool (T)</strong> з панелі зліва</li>
+                        <li>Клікни на полотні — з'явиться курсор</li>
+                        <li>Введи текст у вікні, що відкрилося зверху</li>
+                        <li>Зміни шрифт, розмір та колір у панелі Character (Window → Character)</li>
+                        <li>Застосуй ефекти: клікни правою кнопкою на шар тексту → <strong>Blending Options</strong></li>
+                        <li>Спробуй Drop Shadow (тінь), Stroke (обводка) або Gradient Overlay</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="collapsible" onclick="toggleCollapsible(this)">
+            <div class="collapsible-header">
+                <span>💾 Як зберегти роботу</span>
+                <span class="collapsible-icon">▼</span>
+            </div>
+            <div class="collapsible-content">
+                <div class="collapsible-body">
+                    <ol class="step-list">
+                        <li><strong>PSD (для редагування):</strong> File → Save As PSD — збереже всі шари та ефекти</li>
+                        <li><strong>PNG (з прозорістю):</strong> File → Export As → PNG — для використання в інших проєктах</li>
+                        <li><strong>JPG (фото):</strong> File → Export As → JPG — для публікації в Інтернеті</li>
+                        <li>Обери якість (Quality) — 80-90% оптимально для вебу</li>
+                        <li>Натисни Save та обери папку на комп'ютері</li>
+                    </ol>
+                    <div class="tip-box">
+                        <span class="tip-icon">⚠️</span>
+                        <div>Важливо: Завжди зберігай роботу у форматі PSD перед експортом — так можна буде повернутися до редагування!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Захист роботи -->
+    <section class="animate-in">
+        <h2 class="section-title">🛡️ Захист роботи</h2>
+        <div class="defense-block">
+            <h3>Підготуйся розповісти про свій колаж:</h3>
+            <div class="questions-grid">
+                <div class="question-tag">Яку ідею ти хотів передати?</div>
+                <div class="question-tag">Звідки взяв зображення?</div>
+                <div class="question-tag">Які прийоми використав?</div>
+                <div class="question-tag">Чому обрав саме ці кольори?</div>
+                <div class="question-tag">Що було найскладнішим?</div>
+                <div class="question-tag">Що змінив би зараз?</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Домашнє завдання -->
+    <section class="animate-in">
+        <h2 class="section-title">🏠 Домашнє завдання</h2>
+        <div class="homework-card">
+            <h3>До наступного уроку:</h3>
+            <ul style="list-style: none; margin-top: 15px;">
+                <li style="margin-bottom: 12px;">✅ Заверши колаж "Мій ідеальний світ", якщо не встиг на уроці</li>
+                <li style="margin-bottom: 12px;">✅ Підготуй презентацію свого колажу (3-5 слайдів з поясненням)</li>
+                <li style="margin-bottom: 12px;">✅ Знайди цікавий колаж митця в Інтернеті та проаналізуй його (які прийоми використано?)</li>
+                <li>✅ Подумай: де в реальному житті використовують колажі? (реклама, журнали, соцмережі...)</li>
+            </ul>
+            <div class="tip-box" style="background: white; margin-top: 20px;">
+                <span class="tip-icon">📧</span>
+                <div>Надішли готовий колаж на електронну пошту вчителя або завантаж у Google Classroom</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 40px 20px; color: var(--text-light); border-top: 1px solid #e2e8f0; margin-top: 40px;">
+        <p>Урок інформатики • 7-9 клас • Робота з графікою</p>
+        <p style="margin-top: 10px; font-size: 0.9rem;">Створено з ❤️ для творчих учнів</p>
+    </footer>
+
+</div>
+
+<script>
+    // Toggle collapsible sections
+    function toggleCollapsible(element) {
+        element.classList.toggle('active');
+    }
+
+    // Open Photopea in new tab
+    function openPhotopea() {
+        window.open('https://www.photopea.com', '_blank');
+    }
+
+    // Open Unsplash in new tab
+    function openUnsplash() {
+        window.open('https://unsplash.com', '_blank');
+    }
+
+    // Show technique detail (optional enhancement)
+    function showTechniqueDetail(technique) {
+        const details = {
+            'cut': 'Відсікання: Використовуй Magic Wand або Quick Selection для швидкого виділення. Для складних форм — Pen Tool.',
+            'overlay': 'Нашарування: Експериментуй з режимами змішування шарів (Blend Mode): Multiply, Screen, Overlay, Soft Light.',
+            'compare': 'Зіставлення: Поєднуй велике з малим, старе з новим, реальне з фантастичним для створення сюрреалізму.',
+            'text': 'Текст: Текст може бути не просто написом, а частиною зображення — спробуй обтравку (clipping mask)!'
+        };
+        
+        // Create temporary notification
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            max-width: 300px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        `;
+        notification.innerHTML = `
+            <strong style="display: block; margin-bottom: 8px;">💡 Підказка:</strong>
+            ${details[technique]}
+            <button onclick="this.parentElement.remove()" style="
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: none;
+                border: none;
+                color: white;
+                cursor: pointer;
+                font-size: 18px;
+            ">×</button>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            if (notification.parentElement) notification.remove();
+        }, 5000);
+    }
+
+    // Add animation on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Observe all sections
+    document.querySelectorAll('section').forEach(section => {
+        section.style.opacity = '0';
+        section.style.transform = 'translateY(20px)';
+        section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(section);
+    });
+
+    // Check if iframe loaded
+    window.addEventListener('load', () => {
+        const iframe = document.getElementById('photopeaFrame');
+        setTimeout(() => {
+            try {
+                if (!iframe.contentWindow || iframe.contentWindow.length === 0) {
+                    document.getElementById('editorFallback').style.display = 'block';
+                }
+            } catch (e) {
+                // Cross-origin restriction, iframe is likely working
+            }
+        }, 3000);
+    });
+
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.collapsible').forEach(el => {
+                el.classList.remove('active');
+            });
+        }
+    });
+
+    // Add slide-in animation for notifications
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+
+</body>
+</html>
